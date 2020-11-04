@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CalculateWithInput {
 
-	@Autowired Calculate calculate;
+	@Autowired
+	public Calculate calculate;
 	//public Calculate calculate = new Calculate();
 
 

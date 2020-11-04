@@ -2,6 +2,8 @@ package MyCalculator.MyCalculator;
 
 import org.springframework.stereotype.Component;
 
+import MyCalculatorException.MyCalcException;
+
 @Component
 public class Calculate {
 
@@ -53,19 +55,20 @@ public class Calculate {
 	 * @param dividend
 	 * @param divisor
 	 * @return quotient
+	 * @throws MyCalcException
 	 * @throws Exception
 	 */
-	public double divide(double dividend, double divisor) {
-		if (divisor == 0 || dividend == 0) {
-			throw new RuntimeException("Cannot divide ");
-		} else {
-			double result = dividend / divisor;
-
+	public double divide(double dividend, double divisor){
+		double result = 0;
+		try {
+			result = dividend / divisor;
 			divideop++;
 
-			return result;
+		} catch (Exception e) {
 
 		}
+
+		return result;
 
 	}
 

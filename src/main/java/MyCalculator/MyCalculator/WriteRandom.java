@@ -15,29 +15,37 @@ import MyCalculatorException.MyCalcException;
 
 @Component
 public class WriteRandom {
-	@Autowired
-	private WriteRandom wr;
+
 	static BufferedWriter bw = null;
 	long starttime;
-	
-	private String pathout;
+
 	
 	@Autowired
-	public WriteRandom(@Value("${inFile}") String path) throws MyCalcException {
-		System.out.println(path);
-		this.pathout =  path;
+	public WriteRandom(@Value("${inFile}") String path)  {
+
+		// this.pathout = path;
 
 		try {
-			bw = new BufferedWriter(new FileWriter(pathout));
+			bw = new BufferedWriter(new FileWriter(path));
 		} catch (IOException e) {
-			throw new CalcIOException("couldn't perform write operation", e);
+			try {
+				throw new CalcIOException("couldn't perform write operation", e);
+			} catch (CalcIOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		String heading = "input1,operator,input2";
 		starttime = System.currentTimeMillis();
 		try {
 			bw.append(heading);
 		} catch (IOException e) {
-			throw new CalcIOException("couldn't write heading", e);
+			try {
+				throw new CalcIOException("couldn't write heading", e);
+			} catch (CalcIOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 
 	}
@@ -48,9 +56,8 @@ public class WriteRandom {
 				.println("Please enter the numbers of values to be generated as an input: ");
 		int noOfValue = sc.nextInt();
 
-		//WriteRandom wr = new WriteRandom(path);
-		wr.write(noOfValue);
-		wr.randClose();
+		write(noOfValue);
+		randClose();
 
 	}
 

@@ -13,40 +13,41 @@ import MyCalculatorException.CalcFileNotFoundException;
 import MyCalculatorException.CalcIOException;
 import MyCalculatorException.MyCalcException;
 
+
 @Component
 public class WriteFile {
 	BufferedWriter bw = null;
 	long starttime;
-	
+	@Autowired
+	public WriteFile(@Value("${outFile}") String outpath) {
 
+		try {
+			bw = new BufferedWriter(new FileWriter(outpath));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-private String outpathfile ;
-@Autowired
-	public WriteFile(@Value("${outFile}") String outpath) throws MyCalcException, IOException {
-	
-	this.outpathfile = outpath;
-	
-
-		
-			try {
-				bw = new BufferedWriter(new FileWriter(outpathfile,true));
-			} catch (FileNotFoundException e1) {
-				throw new CalcFileNotFoundException("Not able to find path", e1);
-			}
-		
 		String heading = "input1,operator,input2,=,result";
 		 starttime = System.currentTimeMillis();
 		try {
 			bw.append(heading);
 		} catch (IOException e) {
-			throw new CalcIOException("couldnot write heading in write file", e);
+			try {
+				throw new CalcIOException("couldnot write heading in write file", e);
+			} catch (CalcIOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 
 	}
 
+	
+
 	public void writeOutputFile(InputReturnValues inpValues, double output)
 			throws MyCalcException {
-
+		
 		String calcin3 = Double.toString(output);
 		double input1 = inpValues.getInput1();
 		double input2 = inpValues.getInput2();
@@ -66,8 +67,6 @@ private String outpathfile ;
 		} catch (IOException e1) {
 			throw new CalcIOException("Not able to add result", e1);
 		}
-		
-		
 
 	}
 
@@ -76,9 +75,8 @@ private String outpathfile ;
 		bw.close();
 		long endtime = System.currentTimeMillis();
 		long duration = endtime - starttime;
-		System.out.println("time taken to write the outputs to file" + duration + " ms");
+		System.out.println("time taken to write the outputs to file" + duration
+				+ " ms");
 	}
-	
-	
-	
+
 }

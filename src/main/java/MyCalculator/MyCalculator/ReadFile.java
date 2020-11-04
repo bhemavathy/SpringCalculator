@@ -10,31 +10,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import MyCalculatorException.CalcFileNotFoundException;
 import MyCalculatorException.CalcIOException;
 import MyCalculatorException.MyCalcException;
+
 @Component
 public class ReadFile {
+	BufferedReader br = null;
 	
-	//@Autowired
-	//private InputReturnValues irv ;
-	
-	 String path = "Random.csv";
+	String pathread;
 
-	public List<InputReturnValues> readinputfile()
-			throws MyCalcException {
-		BufferedReader br = null;
-		String line = "";
+	@Autowired
+	public ReadFile(@Value("${inFile}") String path)  {
 
+		this.pathread = path;
+			
+			
+	}
+
+	public List<InputReturnValues> readinputfile() throws MyCalcException, FileNotFoundException {
 		
-		try {
-			br = new BufferedReader(new FileReader(path));
-		} catch (FileNotFoundException e1) {
-			throw new CalcFileNotFoundException("File is not found", e1);
+		br = new BufferedReader(new FileReader(pathread));
+		
 
-		}
+		String line = "";
 
 		List<InputReturnValues> list = new ArrayList<InputReturnValues>();
 		long starttime = System.currentTimeMillis();
